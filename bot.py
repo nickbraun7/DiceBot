@@ -69,7 +69,7 @@ async def help(ctx):
 
     embed.add_field(
         name="**~set _game_**",
-        value="set the current role playing of the server"
+        value="set the current role playing of the server",
         inline=False,
         )
 
