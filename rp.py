@@ -5,13 +5,13 @@ import random
 
 class roll:
     def __init__(self, dice):
-        self.num = int(dice[0])
-        self.die = int(dice[1])
-        self.mod = dice[2] if dice[2] else ""
+        self.num = int(dice[0]) #number of dice
+        self.die = int(dice[1]) #value of dice
+        self.mod = dice[2] if dice[2] else "" #modifier
 
-        self.ls = []
-        self.total = 0
-        self.crit = ""
+        self.ls = [] #list of all dice rolls
+        self.total = 0 #total of dice rolls
+        self.crit = "" #conditional for specific events
 
     def dnd(self):
         if self.die == 20:
@@ -37,8 +37,7 @@ class roll:
         return self.total, self.mod, self.ls, self.crit
 
     def shadow_run(self):
-        print("test")
-        g_total = 0
+        g_total = 0 #total for zeros
         for i in range(self.num):
             x = random.randint(1, 6)
             self.ls.append(str(x))

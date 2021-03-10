@@ -11,7 +11,8 @@ import load, rp
 DiscordToken = load.token()
 OwnerID = 124686030631731203
 
-rp_games = [
+#list of all possible role playing games
+rp_games = [ 
     "DnD",
     "Shadow Run",
     "Tephra",
@@ -53,13 +54,55 @@ async def on_command_error(ctx, error):
 
     raise error
 
+"""
+Discord Command help screen
+"""
 @client.command()
 async def help(ctx):
     embed = discord.Embed()
 
+    embed.add_field(
+        name="**~list**",
+        value="list all the current role playing games supported",
+        inline=False,
+        )
+
+    embed.add_field(
+        name="**~set _game_**",
+        value="set the current role playing of the server"
+        inline=False,
+        )
+
+    embed.add_field(
+        name="**~roll _#d#+/-#_**",
+        value="takes in the argument (number of dice)d(value of dice)(+ or -)(modifier)",
+        inline=False
+        )
+
     embed.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
     await ctx.send(embed=embed, delete_after=60)
 
+"""
+Discord Command to list all supported role
+playing games.
+"""
+@client.command()
+async def list(ctx):
+    embed = discord.Embed()
+
+    embed.add_field(
+        name="**Supported Role Playing Games: **",
+        value="\n".join(rp_games),
+        inline=False
+        )
+
+    embed.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
+    await ctx.send(embed=embed, delete_after=60)
+
+"""
+Discord Command which sets the guild's current
+game to the one specificed by a guild user.
+"""
 @client.command()
 async def set(ctx, *args):
     guild = ctx.guild.id
@@ -78,11 +121,17 @@ async def set(ctx, *args):
     else:
         await ctx.send(":stop_sign: **Unknown Game: **" + game)
 
+"""
+Discord Command which takes the user's arguements,
+checks to see if the string is valid, then calls
+and prints the rolled value result.
+"""
 @client.command()
 async def roll(ctx, arg):
     guild = ctx.guild.id
     guild_game = guilds[guild].game
 
+    #regex string to detect dice rolls
     dice = re.search("(\d+)?d(\d+)([\+\-]\d+)?", arg, re.I)
 
     if guild_game:
@@ -94,6 +143,10 @@ async def roll(ctx, arg):
     else:
         await ctx.send(":stop_sign: **Game Not Set**")
 
+"""
+Unpack the given res from the rp.roll class
+function call and print the result to the user.
+"""
 async def print_res(ctx, res):
     total, mod, ls, crit = res
 
